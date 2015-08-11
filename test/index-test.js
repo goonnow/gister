@@ -67,7 +67,7 @@ vows.describe('gister').addBatch({
       topic: function () {
         var gist = new Gist({ gist_id: 1 })
         gist.request = function (statusCode, cb) {
-          cb(new Error('Mock error'), { statusCode: 200, headers: {} }, {})
+          cb(new Error('Mock error'), { status: 200, headers: {} }, {})
         }
         gist.on('error', wrap(this.callback))
         gist.get()
@@ -80,7 +80,7 @@ vows.describe('gister').addBatch({
       topic: function () {
         var gist = new Gist({ gist_id: 1 })
         gist.request = function (statusCode, cb) {
-          cb(null, { statusCode: 404, headers: {} }, { message: 'Not found' })
+          cb(null, { status: 404, headers: {} }, { message: 'Not found' })
         }
         gist.on('error', wrap(this.callback))
         gist.get()
@@ -93,7 +93,7 @@ vows.describe('gister').addBatch({
       topic: function () {
         var gist = new Gist({ gist_id: 1 })
         gist.request = function (statusCode, cb) {
-          cb(null, { statusCode: 500, headers: {} }, { message: 'Internal Server Error' })
+          cb(null, { status: 500, headers: {} }, { message: 'Internal Server Error' })
         }
         gist.on('error', wrap(this.callback))
         gist.get()
