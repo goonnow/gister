@@ -28,7 +28,7 @@
   },
   "main": "gister.js",
   "scripts": {
-    "prepublish": "browserify -t uglifyify -s Gist gister.js | uglifyjs > dist/gister.min.js",
+    "prepublish": "browserify -t uglifyify -s Gister gister.js | uglifyjs > dist/gister.min.js",
     "test": "vows"
   },
   "engines": {
