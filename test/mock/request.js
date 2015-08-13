@@ -5,7 +5,7 @@ function request(opts, cb) {
 
   if (cb) {
     cb(null, {
-      statusCode: opts.method === 'POST' ? 201 : 200,
+      status: opts.method === 'POST' ? 201 : 200,
       headers: {
         location: "https://gist.github.com/1"
       }

@@ -1,5 +1,5 @@
 /*jshint asi: true, expr: true, curly: false, camelcase: false */
-var request = require('request')
+var superagent = require('superagent')
 var EventEmitter = require('events').EventEmitter
 
 var url = 'https://api.github.com'
@@ -20,7 +20,7 @@ function response(callbacks) {
     limit && (rate = limit)
 
     // if we have a callback attached, call it
-    var cb = callbacks[res.statusCode]
+    var cb = callbacks[res.status]
     if (cb) return cb(body, res)
 
     var error = new Error(body.message)
@@ -89,6 +89,24 @@ function xhr(opts, callbacks) {
   }
 
   return this.request(opts, response.call(this, callbacks))
+}
+
+function request (opts, cb) {
+  var req = superagent(opts.method, opts.uri)
+  for (var header in opts.headers) {
+    req.set(header, opts.headers[header])
+  }
+  if (opts.json) {
+    req.send(opts.json)
+  }
+
+  req.end(function (err, res) {
+    if (err) {
+      return cb(err)
+    }
+
+    cb(err, res, res.body)
+  })
 }
 
 
@@ -199,9 +217,11 @@ Gist.prototype = Object.create(EventEmitter.prototype)
 Gist.prototype.request = function (opts, cb) {
     // User-agent http header is required by Github API
     // REF : http://developer.github.com/v3/#user-agent-required
-    opts.headers = {
-        'user-agent': 'gister'
-    };
+    if (!navigator || !navigator.userAgent) {
+      opts.headers = {
+          'user-agent': 'gister'
+      };
+    }
     return request(opts, cb)
 }
 
